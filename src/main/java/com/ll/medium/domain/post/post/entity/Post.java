@@ -32,4 +32,6 @@ public class Post {
     private String title;
     private String body;
     private boolean isPublished;
+    @Column(name = "is_paid")
+    private boolean isPaid;
 }

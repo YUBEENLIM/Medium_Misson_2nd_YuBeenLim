@@ -31,7 +31,7 @@
         }
     </script>
 
-    <form th:action method="POST" onsubmit="submitLoginForm(this); return false;">
+    <form th:action="@{/member/login}" method="POST" onsubmit="submitLoginForm(this); return false;">
         <div>
             <label>사용자 ID</label>
             <input type="text" name="username">

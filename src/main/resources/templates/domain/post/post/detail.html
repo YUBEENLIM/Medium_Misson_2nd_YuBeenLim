@@ -1,7 +1,8 @@
-<html layout:decorate="~{global/usrLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{global/usrLayout}">
 
 <head>
-    <title th:text="|글 ${post.id}번|"></title>
+    <title th:if="${post}" th:text="|글 ${post.id}번|"></title>
 </head>
 
 <body>
@@ -9,14 +10,15 @@
 <div layout:fragment="content">
     <h1>글 내용</h1>
 
-    <div>
+    <div th:if="${post}">
         <h3>제목</h3>
         <div th:text="${post.title}"></div>
     </div>
 
-    <div>
+    <div th:if="${post}">
         <h3>내용</h3>
-        <div style="white-space: pre-wrap;" th:text="${post.body}"></div>
+        <div th:if="${!post.isPaid() or hasRole('ROLE_USER')}" style="white-space: pre-wrap;" th:text="${post.body}"></div>
+        <div th:if="${post.isPaid() and !hasRole('ROLE_USER')}">이 글은 유료 멤버십 전용입니다.</div>
     </div>
 
     <hr>

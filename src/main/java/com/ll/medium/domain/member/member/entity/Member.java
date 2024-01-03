@@ -1,9 +1,6 @@
 package com.ll.medium.domain.member.member.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,20 +34,22 @@ public class Member {
     private LocalDateTime modifyDate;
     private String username;
     private String password;
-    private boolean isPaid;
+    private Boolean isPaid;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-        if (isPaid) {
+
+        boolean isPaidValue = this.isPaid != null ? this.isPaid : false;
+
+        if (isPaidValue) {
             authorities.add(new SimpleGrantedAuthority("ROLE_PAID"));
         }
 
         if (List.of("system", "admin").contains(username)) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
-
-        return authorities;
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER" + (isPaidValue ? "_PAID" : "")));
     }
 }
