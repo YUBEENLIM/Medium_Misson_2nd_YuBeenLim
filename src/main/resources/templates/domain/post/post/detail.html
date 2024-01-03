@@ -18,7 +18,7 @@
     <div th:if="${post}">
         <h3>내용</h3>
         <div th:if="${!post.isPaid() or hasRole('ROLE_USER')}" style="white-space: pre-wrap;" th:text="${post.body}"></div>
-        <div th:if="${post.isPaid() and !hasRole('ROLE_USER')}">이 글은 유료 멤버십 전용입니다.</div>
+        <div th:if="${post.isPaid() and not #authorization.expression('hasRole(''ROLE_USER'')')}">이 글은 유료 멤버십 전용입니다.</div>
     </div>
 
     <hr>
