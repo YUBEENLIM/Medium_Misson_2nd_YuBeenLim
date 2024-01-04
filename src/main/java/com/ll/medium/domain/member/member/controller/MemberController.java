@@ -22,7 +22,6 @@ public class MemberController {
     private final MemberService memberService;
     private final Rq rq;
 
-    @PreAuthorize("isAnonymous()")
     @GetMapping("/join")
     public String showJoin() {
         return "domain/member/member/join";

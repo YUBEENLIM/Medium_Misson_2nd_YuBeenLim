@@ -25,7 +25,6 @@ public class PostService {
                 .body(body)
                 .isPublished(isPublished)
                 .build();
-
         postRepository.save(post);
     }
 
@@ -40,4 +39,20 @@ public class PostService {
     public Page<Post> search(String kw, Pageable pageable) {
         return postRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(kw, kw, pageable);
     }
+
+    public String findPostContentById(long id, boolean isPaidMember) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+
+            if (post.isPaid() && !isPaidMember) {
+                return "이 글은 유료 멤버십 전용입니다.";
+            } else {
+                return post.getBody();
+            }
+        } else {
+            return "해당 글을 찾을 수 없습니다.";
+        }
+    }
+
 }
